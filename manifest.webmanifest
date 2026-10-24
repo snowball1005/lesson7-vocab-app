@@ -1,0 +1,21 @@
+{
+  "name": "Lesson 7 하루 10분 단어 미션",
+  "short_name": "단어10분",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f7ff",
+  "theme_color": "#6b5cff",
+  "description": "중2 Lesson 7 영어 단어 25개를 하루 10분씩 5일 동안 익히는 학습 앱",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

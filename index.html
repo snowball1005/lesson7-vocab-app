@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6b5cff">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Lesson 7 단어 10분</title>
+<style>
+:root{--brand:#6b5cff;--ink:#22253a;--muted:#6b7280;--card:#fff;--line:#e8e8f2}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;background:linear-gradient(#f3f0ff,#fbfdff);color:var(--ink)}
+main{max-width:760px;margin:auto;padding:16px 16px 40px}
+.hero{padding:22px;border-radius:26px;background:linear-gradient(135deg,#6554f4,#8e7eff);color:#fff;box-shadow:0 16px 40px #6554f433}
+.hero h1{font-size:29px;margin:0 0 6px}.hero p{margin:0;opacity:.95}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.stats{margin-top:14px}.pill{background:#ffffff24;padding:9px 12px;border-radius:999px;font-weight:800}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:15px 0}
+.day{border:0;padding:13px 4px;border-radius:16px;background:white;font-weight:900;color:#5d6170;box-shadow:0 5px 18px #0000000d}.day.active{background:#22253a;color:#fff}.day.done{outline:3px solid #9beaaf}
+.card{background:white;border-radius:24px;padding:20px;margin-top:12px;box-shadow:0 8px 30px #0000000c}
+.badge{display:inline-block;background:#eeeaff;color:#5a38d1;padding:7px 10px;border-radius:999px;font-size:13px;font-weight:900}
+h2{margin:10px 0 5px}.muted{color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}.tile{border:2px solid var(--line);padding:14px;border-radius:18px;text-align:center;background:#fff}.word{font-size:22px;font-weight:950}.meaning{font-size:14px;color:#616575;margin-top:4px}
+button{font:inherit}.btn{border:0;border-radius:15px;padding:12px 16px;font-weight:900}.primary{background:var(--brand);color:white}.secondary{background:#efedff;color:#4c39ba}.controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:18px}
+.question{font-size:29px;text-align:center;font-weight:950;padding:20px 4px}.opts{display:grid;gap:10px}.opt{border:2px solid var(--line);border-radius:16px;padding:14px;background:white;text-align:left}.opt.ok{border-color:#22c55e;background:#effdf4}.opt.no{border-color:#ef4444;background:#fff2f2}.feedback{text-align:center;min-height:30px;padding:8px;font-weight:900}
+.example{background:#f8f9fd;border-radius:17px;padding:17px;line-height:1.6;font-size:18px}.mission{background:#fff7ed;border:2px dashed #fdba74;border-radius:17px;padding:14px;margin-top:13px}
+.progress{height:10px;background:#ffffff40;border-radius:999px;overflow:hidden;flex:1;min-width:150px}.bar{height:100%;background:#fff;width:0}
+.install{margin-top:12px;display:none}.wrongbox{display:grid;gap:8px;margin-top:10px}.wrongitem{background:#f8f9fd;border-radius:13px;padding:11px}
+.final{text-align:center}.big{font-size:58px;font-weight:1000;color:#5b42e8}.tiny{font-size:12px;color:#6b7280}
+@media(min-width:620px){.grid{grid-template-columns:repeat(5,1fr)}}
+</style>
+</head>
+<body><main>
+<section class="hero">
+<h1>🎯 Lesson 7 단어 10분</h1><p>하루 5개만. 맞힌 단어는 졸업, 헷갈린 단어만 복습!</p>
+<div class="row stats"><span class="pill">⏱️ <span id="timer">10:00</span></span><span class="pill">⭐ <span id="stars">0</span></span><div class="progress"><div class="bar" id="bar"></div></div></div>
+<button id="installBtn" class="btn secondary install">📲 홈 화면에 앱 설치</button>
+</section>
+<div class="days" id="days"></div>
+<div id="app"></div>
+<div class="tiny" style="text-align:center;margin-top:20px">학습 기록은 이 휴대폰에 저장됩니다.</div>
+</main>
+<script>
+const WORDS=[{"word": "bakery", "meaning": "빵집, 제과점", "example": "The bakery sells delicious cakes.", "day": 1}, {"word": "clerk", "meaning": "점원", "example": "Mike is working as a clerk in the shoe store.", "day": 1}, {"word": "clothing", "meaning": "옷, 의류", "example": "The store sells clothing for all ages.", "day": 1}, {"word": "product", "meaning": "제품, 생산물", "example": "She ordered the product from an online store.", "day": 1}, {"word": "on sale", "meaning": "할인 중인", "example": "This T-shirt is on sale today.", "day": 1}, {"word": "deal", "meaning": "거래", "example": "I bought two T-shirts for 10 dollars, and it was a good deal.", "day": 2}, {"word": "total", "meaning": "총액, 합계", "example": "The total for the dinner is $45.", "day": 2}, {"word": "pair", "meaning": "쌍, 짝", "example": "I bought a pair of gloves.", "day": 2}, {"word": "sneaker", "meaning": "운동화", "example": "My sneakers are perfect for running.", "day": 2}, {"word": "mug", "meaning": "머그잔", "example": "She poured hot water into the mug.", "day": 2}, {"word": "choice", "meaning": "선택", "example": "Every choice will affect your life.", "day": 3}, {"word": "option", "meaning": "선택권", "example": "There are many options for traveling.", "day": 3}, {"word": "suggestion", "meaning": "제안", "example": "We listened to her suggestion carefully.", "day": 3}, {"word": "recommend", "meaning": "추천하다", "example": "He recommended the chocolate ice cream for dessert.", "day": 3}, {"word": "both", "meaning": "둘 다", "example": "Both friends live in London.", "day": 3}, {"word": "bright", "meaning": "밝은", "example": "She painted her room in bright blue colors.", "day": 4}, {"word": "local", "meaning": "지역의, 현지의", "example": "They hold a local festival every fall.", "day": 4}, {"word": "fat-free", "meaning": "무지방의", "example": "He only drinks fat-free milk.", "day": 4}, {"word": "flavor", "meaning": "맛", "example": "The candy comes in various flavors.", "day": 4}, {"word": "environment", "meaning": "환경", "example": "Planting trees is good for the environment.", "day": 4}, {"word": "producer", "meaning": "생산자", "example": "The producer grows and sells vegetables.", "day": 5}, {"word": "proud", "meaning": "자랑스러운", "example": "My grandmother is proud of me.", "day": 5}, {"word": "cross out", "meaning": "(선을 그어) 지우다", "example": "He crossed out my name from the list.", "day": 5}, {"word": "trick", "meaning": "속이다", "example": "She can easily trick people with her acting.", "day": 5}, {"word": "tricky", "meaning": "교묘한, 까다로운", "example": "You can’t solve this puzzle because it is very tricky.", "day": 5}];
+let day=Number(localStorage.getItem("l7_day")||1),step=0,idx=0,score=0,missed=[],order=[],sec=600,tick=null,deferredPrompt=null;
+const steps=["1분 · 단어 보기","2분 · 영어 → 뜻","2분 · 뜻 → 영어","2분 · 문장 속 단어","2분 · 뜻 확인","1분 · 틀린 단어 재도전"];
+const esc=s=>String(s).replaceAll("\\","\\\\").replaceAll("'","\\'");
+const today=()=>WORDS.filter(w=>w.day===day);
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+function setbar(){document.getElementById("bar").style.width=Math.min(100,Math.round(step/6*100))+"%"}
+function timer(){clearInterval(tick);document.getElementById("timer").textContent="10:00";sec=600;tick=setInterval(()=>{if(sec>0){sec--;let m=String(Math.floor(sec/60)).padStart(2,"0"),s=String(sec%60).padStart(2,"0");document.getElementById("timer").textContent=m+":"+s}},1000)}
+function days(){let done=JSON.parse(localStorage.getItem("l7_done")||"[]");document.getElementById("days").innerHTML=[1,2,3,4,5].map(d=>`<button class="day ${d===day?'active':''} ${done.includes(d)?'done':''}" onclick="pick(${d})">DAY ${d}${done.includes(d)?' ✓':''}</button>`).join("")}
+function pick(d){day=d;localStorage.setItem("l7_day",d);step=0;idx=0;score=0;missed=[];order=[];timer();days();setbar();render()}
+function speak(x){if("speechSynthesis"in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(x);u.lang="en-US";u.rate=.84;speechSynthesis.speak(u)}}
+function next(){step++;idx=0;order=[];setbar();render()}
+function shell(t,s,b,label="다음 미션 →"){return `<section class="card"><span class="badge">${steps[step]||"완료"}</span><h2>${t}</h2><div class="muted">${s}</div>${b}<div class="controls"><button class="btn primary" onclick="next()">${label}</button></div></section>`}
+function render(){let a=document.getElementById("app");if(step===0)return learn(a);if(step===1)return quiz(a,0);if(step===2)return quiz(a,1);if(step===3)return sent(a);if(step===4)return meaning(a);if(step===5)return retry(a);finish(a)}
+function learn(a){a.innerHTML=shell("오늘의 5단어","단어를 눌러 발음을 듣고 뜻을 소리 내어 말해보세요.",`<div class="grid">${today().map(w=>`<button class="tile" onclick="speak('${esc(w.word)}')"><div class="word">${w.word}</div><div class="meaning">${w.meaning}</div><div>🔊</div></button>`).join("")}</div><div class="mission"><b>규칙:</b> 5개를 완벽히 쓰려고 하지 않아도 됩니다. 뜻이 바로 떠오르면 성공!</div>`)}
+function options(w,field){let x=shuffle(WORDS.filter(z=>z[field]!==w[field])).slice(0,2);return shuffle([w,...x])}
+function quiz(a,reverse){if(!order.length)order=shuffle(today());if(idx>=order.length){a.innerHTML=shell("빠른 퀴즈 완료!",`현재 점수 ${score}점`,`<div class="final"><div class="big">${score}</div>잘했어요 🙌</div>`);return}let w=order[idx],field=reverse?"word":"meaning",front=reverse?w.meaning:w.word,opts=options(w,field);a.innerHTML=`<section class="card"><span class="badge">${steps[step]}</span><div class="question">${front}</div><div class="opts">${opts.map(o=>`<button class="opt" onclick="answer(this,'${esc(o[field])}','${esc(w[field])}','${esc(w.word)}')">${o[field]}</button>`).join("")}</div><div id="fb" class="feedback"></div><div class="muted" style="text-align:center">${idx+1}/5</div></section>`}
+function answer(btn,c,r,word){document.querySelectorAll(".opt").forEach(b=>b.disabled=true);if(c===r){btn.classList.add("ok");score+=10;stars(1);fb.textContent="✅ 정답!"}else{btn.classList.add("no");missed.push(word);fb.textContent="정답: "+r;document.querySelectorAll(".opt").forEach(b=>{if(b.textContent.trim()===r)b.classList.add("ok")})}setTimeout(()=>{idx++;render()},650)}
+function sent(a){if(!order.length)order=shuffle(today());if(idx>=5){a.innerHTML=shell("문장 미션 완료!","교과서 예문에서도 단어를 찾았어요.",`<div class="final">📘 문장 속에서도 OK!</div>`);return}let w=order[idx],re=new RegExp(w.word.replace(/[.*+?^${}()|[\\]\\\\]/g,"\\\\$&"),"i"),ex=w.example.replace(re,"_____"),opts=options(w,"word");a.innerHTML=`<section class="card"><span class="badge">${steps[step]}</span><h2>빈칸에 들어갈 단어는?</h2><div class="example">${ex}</div><div class="opts" style="margin-top:12px">${opts.map(o=>`<button class="opt" onclick="ansSent(this,'${esc(o.word)}','${esc(w.word)}')">${o.word}</button>`).join("")}</div><div id="fb" class="feedback"></div></section>`}
+function ansSent(b,c,r){document.querySelectorAll(".opt").forEach(x=>x.disabled=true);if(c===r){b.classList.add("ok");score+=10;stars(1);fb.textContent="✅ 정답!"}else{b.classList.add("no");missed.push(r);fb.textContent="정답: "+r}setTimeout(()=>{idx++;render()},650)}
+function meaning(a){if(!order.length)order=shuffle(today());if(idx>=5){a.innerHTML=shell("뜻 확인 완료!","전체 문장 번역보다 핵심 단어 뜻부터 잡으면 됩니다.",`<div class="final">🌟 오늘 단어를 문맥에서도 확인했어요.</div>`);return}let w=order[idx];a.innerHTML=`<section class="card"><span class="badge">${steps[step]}</span><h2>이 단어 뜻을 말해보세요.</h2><div class="question">${w.word}</div><div class="example">${w.example}</div><div class="controls"><button class="btn secondary" onclick="document.getElementById('reveal').style.display='block'">뜻 보기</button></div><div id="reveal" class="mission" style="display:none"><b>${w.word}</b> = ${w.meaning}</div><div class="controls"><button class="btn primary" onclick="idx++;render()">다음 →</button></div></section>`}
+function retry(a){let prev=JSON.parse(localStorage.getItem("l7_missed")||"[]");let u=[...new Set([...prev,...missed])];localStorage.setItem("l7_missed",JSON.stringify(u));let list=u.length?u:today().slice(0,2).map(x=>x.word);a.innerHTML=shell("마지막 1분","틀린 단어만 다시 보고 오늘 공부를 끝내세요.",`<div class="mission">${u.length?`헷갈린 단어 ${u.length}개만 다시 봅니다.`:"오늘은 모두 맞혔어요! 보너스 2개만 확인해요."}</div><div class="wrongbox">${list.map(x=>{let w=WORDS.find(z=>z.word===x);return `<div class="wrongitem"><b>${w.word}</b> → ${w.meaning}</div>`}).join("")}</div>`,"오늘 학습 끝내기 🎉")}
+function finish(a){clearInterval(tick);let done=JSON.parse(localStorage.getItem("l7_done")||"[]");if(!done.includes(day))done.push(day);localStorage.setItem("l7_done",JSON.stringify(done));days();setbar();let next=day<5?`<button class="btn primary" onclick="pick(${day+1})">DAY ${day+1} 미리 보기 →</button>`:"<button class='btn primary' onclick='pick(1)'>다시 복습하기</button>";a.innerHTML=`<section class="card final"><div style="font-size:60px">🎉</div><h2>DAY ${day} 완료!</h2><div class="big">${score}</div><p>오늘 10분 미션 성공. 이제 그만해도 됩니다.</p>${next}</section>`}
+function stars(n){let s=Number(localStorage.getItem("l7_stars")||0)+n;localStorage.setItem("l7_stars",s);document.getElementById("stars").textContent=s}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;installBtn.style.display="inline-block"});
+installBtn.addEventListener("click",async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.style.display="none"}else alert("iPhone에서는 Safari 공유 버튼 → '홈 화면에 추가'를 선택하세요.")});
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");
+stars(0);days();timer();render();
+</script></body></html>
