@@ -70,7 +70,7 @@ const DATA={"7":{"title":"Lesson 7","words":[{"w":"actually","m":"사실은, 실
 let lesson=localStorage.getItem("eng_lesson")||"7", session=[], qIndex=0, score=0, missedNow=[], sec=600, tick=null, deferredPrompt=null;
 const $=id=>document.getElementById(id);
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function esc(s){return String(s).replaceAll("\","\\").replaceAll("'","\'")}
+function esc(s){return String(s).replaceAll("\\","\\\\").replaceAll("'","\\'")}
 function keyStore(k){return `eng_${lesson}_${k}`}
 function getJSON(k,fallback){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(fallback))}catch{return fallback}}
 function saveJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
