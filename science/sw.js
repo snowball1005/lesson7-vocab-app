@@ -1,5 +1,5 @@
 /* 중2 과학 공부방 offline cache — scope: /science/ only */
-const CACHE = 'science-study-offline-v1';
+const CACHE = 'science-study-offline-v2';
 const CORE = ['./','./index.html','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting()));

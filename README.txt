@@ -20,3 +20,12 @@
 - PWA 설치 가능, 학습 기록/별/레벨/오답은 기기 localStorage에 저장
 - Android Chrome: 메뉴 → 앱 설치
 - iPhone Safari: 공유 → 홈 화면에 추가
+
+수정 및 검증 안내
+- 영어 고정 ID 전환: 기존 오답/통계를 v2 키로 이전하며 원본은 보존합니다.
+- 철자 오답 저장·입력형 복습, 중복 채점 방지, 화면 전환 예약 취소를 적용했습니다.
+- 영어 캐시는 과학 캐시를 삭제하지 않으며 /science/ 요청을 처리하지 않습니다.
+- 과학 앱: /science/ (기억 카드 정답 보기 오류 수정)
+- 휴대폰 설치·오프라인 점검: docs/mobile-offline-checklist.md
+- 기록 이전·콘텐츠 ID 편집 규칙 및 테스트: docs/stable-ids.md
+- 회귀 테스트: node --test tests/regression.cjs
